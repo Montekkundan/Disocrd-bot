@@ -1,3 +1,6 @@
 .env
 .idea/
 .DS_Store
+assistant_model.h5
+assistant_model_classes.pkl
+assistant_model_words.pkl

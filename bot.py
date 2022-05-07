@@ -2,7 +2,12 @@ import discord
 from discord.ext import commands
 import os
 from dotenv import load_dotenv
+from neuralintents import GenericAssistant
 
+
+chatbot = GenericAssistant('intents.json')
+chatbot.train_model()
+chatbot.save_model()
 
 # Variables
 BOT_NAME = "Bro"
@@ -13,11 +18,11 @@ minecraft_server_url = "lightmc.fun" # this is just an example, and you should u
 
 bot_help_message = """
 :: Bot Usage ::
-`!mc help`                   : shows help
+`!b help`                   : shows help
 """
 
 # Set the bot command prefix
-bot = commands.Bot(command_prefix="!")
+bot = commands.Bot(command_prefix="!b")
 
 # Executes when the bot is ready
 @bot.event
@@ -31,8 +36,12 @@ async def on_message(message):
     if message.author == bot.user:
         return
 
-    if message.content == '!mc':
+    if message.content == '!b help':
         await message.channel.send(bot_help_message)
+
+    if message.content.startswith("!b"):
+        response = chatbot.request(message.content[2:])
+        await message.channel.send(response)
 
 
 bot.run(DISCORD_TOKEN)
